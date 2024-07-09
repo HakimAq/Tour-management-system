@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $Password = $_POST['Password'];
 
   // Create a prepared statement for checking admin
-  $stmtAdmin = $conn->prepare("SELECT  userName, Password FROM customers WHERE userName = ? AND is_admin = 1");
+  $stmtAdmin = $conn->prepare("SELECT customer_id, userName, Password FROM customers WHERE userName = ? AND is_admin = 1");
   $stmtAdmin->bind_param("s", $userName);
   $stmtAdmin->execute();
   $resultAdmin = $stmtAdmin->get_result();
@@ -38,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultCustomer->num_rows > 0) {
       $rowCustomer = $resultCustomer->fetch_assoc();
       if ($Password == $rowCustomer['Password']) { // Compare plain passwords directly
-        // Redirect regular user to seller.php
+        // Redirect regular user to package.php
         $_SESSION["id"] = $rowCustomer["customer_id"];
+        $_SESSION["is_admin"] = false;
         header('Location: package.php');
         exit;
       } else {
@@ -48,11 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      }
     } else {
       $username_err = "User not found";
+      echo "<script>alert('Invalid username or password.');</script>";
     }
   }
 
   $stmtAdmin->close();
-//   $stmtCustomer->close();
+  $stmtCustomer->close();
 }
 $conn->close();
 ?>

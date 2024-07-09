@@ -83,8 +83,18 @@
     text-transform: capitalize;
 }
 .header .navbar a:hover {
-    color: aliceblue;
+    color: var(--main-color);
 }
+.header .icons a{
+    font-size: 1.7rem;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 1.5rem;
+}
+.header .icons a:hover{
+    color: var(--main-color);
+}  
+ 
 
 * {
     font-family: "Poppins", sans-serif;
@@ -106,8 +116,9 @@
         <a href="user_list.php">user information</a>
         <a href="booked.php">package booked</a>
     </nav>
-   
-    <div id="menu-btn" class="fas fa-bars"></div>
+    <div class="icons">
+        <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
+    </div>
 </section>
 <div class="main-content1">
 <div class="main-content">
@@ -116,11 +127,12 @@
     <div class="package-container">
 <?php
 include 'connection.php';
-// session_start();
-// if (!isset($_SESSION['id'])) {
-//     header('Location: login.php'); // Correct redirection header
-//     exit(); // Ensure the script stops executing after the redirection
-// }
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: login.php');
+    exit();
+}
+
 
 try {
     // Create a new PDO instance

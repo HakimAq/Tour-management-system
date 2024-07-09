@@ -42,9 +42,18 @@
     text-transform: capitalize;
 }
 .header .navbar a:hover {
-    color: aliceblue;
+    color: var(--main-color);
 }
-
+.header .icons a{
+    font-size: 1.7rem;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 1.5rem;
+}
+.header .icons a:hover{
+    color: var(--main-color);
+}  
+ 
 * {
     font-family: "Poppins", sans-serif;
     margin:0; padding:0;
@@ -65,14 +74,21 @@
         <a href="user_list.php">user information</a>
         <a href="booked.php">package booked</a>
     </nav>
-    
-    <div id="menu-btn" class="fas fa-bars"></div>
+    <div class="icons">
+        <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
+    </div>
 </section>
 <div class="information">
 <center><h1>User Information</h1></center>
 
 <?php
 include "connection.php";
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: login.php');
+    exit();
+}
+
 
 $sql= "SELECT * FROM customers";
 $query = $conn->query($sql);

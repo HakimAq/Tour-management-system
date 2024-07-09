@@ -1,10 +1,10 @@
 <?php
 include 'connection.php';
-// session_start();
-// if (!isset($_SESSION['id'])) {
-//     header('Location: login.php'); // Correct redirection header
-//     exit(); // Ensure the script stops executing after the redirection
-// }
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: login.php');
+    exit();
+}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -84,6 +84,9 @@ mysqli_close($conn);
         <a href="user_list.php">User Information</a>
         <a href="booked.php">package booked</a>
     </nav>
+    <div class="icons">
+        <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
+    </div>
 </section>
 <style>
 .container {

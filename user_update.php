@@ -1,5 +1,11 @@
 <?php
 include 'connection.php';
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: login.php');
+    exit();
+}
+
 if (isset($_GET['customer_id'])) {
     $id = $_GET['customer_id'];
 
@@ -101,6 +107,9 @@ mysqli_close($conn);
         <a href="package_list.php">Package Information</a>
         <a href="user_list.php">User Information</a>
     </nav>
+    <div class="icons">
+        <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
+    </div>
 </section>
 <div class="container">
     <div class="form">

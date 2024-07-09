@@ -1,11 +1,11 @@
 <?php
-
 include 'connection.php';
-// session_start();
-// if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-//     header('location:login.php');
-//     exit();
-// }
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: login.php');
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Create the uploads directory if it doesn't exist
   $upload_dir = 'uploads/';
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   // Handle the uploaded file
-  $target_file = basename($_FILES["image"]["name"]);
+  $target_file = $upload_dir . basename($_FILES["image"]["name"]);
   if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
     // File successfully uploaded
     $image = $target_file;
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the statement
     if ($stmt->execute()) {
-     include('package_list.php');
+      include('package_list.php');
       exit;
     } else {
       // Display an error message if the query fails
@@ -53,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,13 +110,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <section class="header">
     <a href="home.php" class="logo"><h3>TOURMANDU</h3></a>
     <nav class="navbar">
-        <a href="addPackage.php">Add Package</a>
+        <a href="addPackages.php">Add Package</a>
         <a href="package_list.php">Package Information</a>
         <a href="user_list.php">User Information</a>
         <a href="booked.php">package booked</a>
     </nav>
     <div class="icons">
-        <a href="login.php"><i class="fas fa-user-circle"></i>Login</a>
+        <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
     </div>
     <div id="menu-btn" class="fas fa-bars"></div>
 </section>
