@@ -1,3 +1,12 @@
+<?php
+session_start(); // Start the session
+
+// Ensure $package_id is set and retrieved correctly
+$package_id = $_GET['id'];
+
+
+// Your HTML and PHP code for booking form
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,10 +79,14 @@
         <a href="home.php">Home</a>
         <a href="about.php">About</a>
         <a href="package.php">Package</a>
-        <a href="book.php">Book</a>
+        
     </nav>
     <div class="icons">
-        <a href="login.php"><i class="fas fa-user-circle"></i>Login</a>
+        <?php if (!isset($_SESSION['id'])): ?>
+            <a href="login.php"><i class="fas fa-user-circle"></i> Login</a>
+        <?php else: ?>
+            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <?php endif; ?>
     </div>
     <div id="menu-btn" class="fas fa-bars"></div>
 </section>
@@ -83,8 +96,8 @@
 </div>
 <section class="booking">
     <h1 class="heading-title">book your trip!</h1>
-    <form action="book_form.php" method="post" class="book-form">
-        <div class="flex">
+    <form action="book_form.php?package_id=<?php echo $package_id; ?>" method="post" class="book-form">
+    <div class="flex">
             <div class="inputBox">
                 <span>name:</span>
                 <input type="text" placeholder="enter your name" name="name" required>
@@ -101,10 +114,7 @@
                 <span>address:</span>
                 <input type="text" placeholder="enter your address" name="address" required>
             </div>
-            <div class="inputBox">
-                <span>where to:</span>
-                <input type="text" placeholder="place you want to visit" name="location" required>
-            </div>
+        
             <div class="inputBox">
                 <span>how many:</span>
                 <input type="number" placeholder="number of guests" name="guests" min="1" required>

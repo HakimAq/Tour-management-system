@@ -155,7 +155,7 @@ try {
 
             // Display the package record
             echo "<div class='package'>";
-            // echo "<p>ID: " . $id . "</p>";
+            echo "<p>ID: " . $id . "</p>";
             echo "<p>Location: " . $location . "</p>";
             echo "<p>Duration: " . $duration . " </p>";
             echo "<p>Price: RS " . $price . "</p>";

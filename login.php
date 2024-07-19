@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   $stmtAdmin->close();
-  $stmtCustomer->close();
+//   $stmtCustomer->close();
 }
 $conn->close();
 ?>
@@ -184,7 +184,7 @@ form p a {
         <a href="home.php">Home</a>
         <a href="about.php">About</a>
         <a href="package.php">Package</a>
-        <a href="book.php">Book</a>
+        
     </nav>
     <div class="icons">
         <a href="login.php"><i class="fas fa-user-circle"></i>Login</a>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +87,7 @@
         }
         .packages .box-container .box:hover .image img {
             transform: scale(1.2);
+            transition: 0.75s ease-in-out;
         }
     </style>
 </head>
@@ -94,10 +98,14 @@
         <a href="home.php">Home</a>
         <a href="about.php">About</a>
         <a href="package.php">Package</a>
-        <a href="book.php">Book</a>
+        
     </nav>
     <div class="icons">
-        <a href="login.php"><i class="fas fa-user-circle"></i>Login</a>
+        <?php if (!isset($_SESSION['id'])): ?>
+            <a href="login.php"><i class="fas fa-user-circle"></i> Login</a>
+        <?php else: ?>
+            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <?php endif; ?>
     </div>
     <div id="menu-btn" class="fas fa-bars"></div>
 </section>

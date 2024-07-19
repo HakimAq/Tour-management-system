@@ -163,7 +163,7 @@ form p a {
         <a href="home.php">Home</a>
         <a href="about.php">About</a>
         <a href="package.php">Package</a>
-        <a href="book.php">Book</a>
+        
     </nav>
     <div class="icons">
         <a href="login.php"><i class="fas fa-user-circle"></i>Login</a>
@@ -205,8 +205,7 @@ form p a {
                     </div>
                     <div class="input-field">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" name="Password" placeholder="Password" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}" title="" required>
-">
+                        <input type="password" name="Password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"  title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters" required>
                     </div>
                 </div>
 

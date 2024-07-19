@@ -60,18 +60,47 @@ section{
 }
 
 
-.btn{
+/* Basic button styles */
+.btn {
     display: inline-block;
-    background: var(--black);
-    margin-top: 1rem;
-    color: var(--white);
-    font-size: 1.7rem;
-    padding: 1rem 3rem;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color:var(--main-color);
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
-}
-.btn:hover{
-    background: var(--main-color);
-}
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  /* Hover effect */
+  .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Active state */
+  .btn:active {
+    background-color: #004085;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .btn {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .btn {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+  
 
 .heading-title{
     text-align: center;

@@ -103,24 +103,28 @@ if($query->num_rows >0){
     echo "<th>Email</th>";  
     echo "<th>Phone Number</th>";
     echo "<th>Address</th>";
-    echo "<th>location</th>";
+   
     echo "<th>Guests</th>";
     echo "<th>Arrivals</th>";
     echo "<th>Leaving</th>";
+    echo "<th>Package ID</th>";
+    echo "<th>Customer ID</th>";
     echo "</tr>";
 
 
     while($row = $query->fetch_assoc()){
         echo "<tr>";
-        echo "<td>".$row['id']."</td>";
+        echo "<td>".$row['book_id']."</td>";
         echo "<td>".$row['name']."</td>";
         echo "<td>".$row['address']."</td>";
         echo "<td>".$row['email']."</td>";
         echo "<td>".$row['phone']."</td>";
-        echo "<td>".$row['location']."</td>";
+        
         echo "<td>".$row['guests']."</td>";
         echo "<td>".$row['arrivals']."</td>";
         echo "<td>".$row['leaving']."</td>";
+        echo "<td>".$row['id']."</td>";
+        echo "<td>".$row['customer_id']."</td>";
         
         echo "</tr>";
     }
