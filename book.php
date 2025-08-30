@@ -1,169 +1,196 @@
 <?php
-session_start(); // Start the session
+session_start();
 
-// Ensure $package_id is set and retrieved correctly
-$package_id = $_GET['id'];
-
-
-// Your HTML and PHP code for booking form
+// Get and validate package_id
+$package_id = isset($_GET['id']) ? $_GET['id'] : '';
+if (empty($package_id) || !ctype_digit($package_id)) {
+    header("Location: packages.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Book</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="style2.css" />
+  
     <style>
-        .heading {
-            background-size: cover !important;
-            background-position: cover !important;
-            padding-top: 7rem;
-            padding-bottom: 5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }   
-        .heading h1 {
-            font-size: 6rem;
-            text-transform: uppercase;
-            color:white;
-            text-shadow: var(--text-shadow);
+        /* Booking Section Styles */
+        .booking {
+            padding: 9rem 10%;
+            background: #f9f9f9;
         }
-        .header .icons a {
-            font-size: 1.7rem;
-            color: #fff;
-            cursor: pointer;
-            margin-right: 1.5rem;
+
+        .heading-title {
+            text-align: center;
+            font-size: 5rem;
+            color: #3c00a0;
+            margin-bottom: 5rem;
+            position: relative;
         }
-        .header .icons a:hover {
-            color: var(--main-color);
+
+        .heading-title::after {
+            content: '';
+            width: 100px;
+            height: 4px;
+            border-radius: 3px;
+            background: rgb(128, 79, 128);
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        .booking .book-form {
-            padding:2rem;
-            background: var(--light-bg);
+
+        .book-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem 4rem;
+            border-radius: 24px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
-        .booking .book-form .flex {
+
+        .book-form .flex {
             display: flex;
             flex-wrap: wrap;
-            gap:3rem;
+            gap: 1.5rem;
+            justify-content: space-between;
         }
-        .booking .book-form .flex .inputBox input {
-            width: 100%;
-            padding:0.5rem 10rem;
-            font-size: 2.5rem;
-            color: var(--black);
-            text-transform: none;
-            margin-top:1rem;
-            border: var(--border);
+
+        .book-form .inputBox {
+            flex: 1 1 45%;
+            display: flex;
+            flex-direction: column;
         }
-        .booking .book-form .flex .inputBox input:focus::placeholder {
-            color: var(--light-black);
+
+        .book-form .inputBox span {
+            font-weight: 600;
+            color: #3c00a0;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
         }
-        .booking .book-form .flex .inputBox span {
-            font-size: 2rem;
-            color: black;
+
+        /* Bigger input fields */
+        .book-form input[type="text"],
+        .book-form input[type="email"],
+        .book-form input[type="tel"],
+        .book-form input[type="number"],
+        .book-form input[type="date"] {
+            background: #eaeaea;
+            border-radius: 8px;
+            border: none;
+            padding: 20px 25px;
+            font-size: 1.2rem;
+            outline: none;
+            transition: box-shadow 0.3s ease;
+            height: 50px;
         }
-        .booking .book-form .btn {
-             margin-top: 2rem;
-             display: center;
+
+        .book-form input[type="text"]:focus,
+        .book-form input[type="email"]:focus,
+        .book-form input[type="tel"]:focus,
+        .book-form input[type="number"]:focus,
+        .book-form input[type="date"]:focus {
+            box-shadow: 0 0 8px 3px rgba(142, 68, 173, 0.6);
+        }
+
+        .book-form input[type="submit"].btn {
+            display: block;
+            width: 220px;
+            margin: 3rem auto 0;
+            background: #3c00a0;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            height: 55px;
+            font-size: 1.4rem;
+            transition: background-color 0.3s ease;
+            border: none;
+            font-weight: 600;
+        }
+
+        .book-form input[type="submit"].btn:hover {
+            background: #5a1dbb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .book-form .inputBox {
+                flex: 1 1 100%;
+            }
+            .book-form {
+                padding: 2rem;
+            }
+            .book-form input[type="submit"].btn {
+                width: 100%;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Heading background */
+        .heading {
+            background: url('https://hips.hearstapps.com/hmg-prod/images/autumn-leaves-fallen-in-forest-royalty-free-image-1628717422.jpg?crop=1xw:0.84375xh;center,top') no-repeat center/cover;
+            padding: 6rem 0;
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
         }
     </style>
 </head>
 <body>
-<section class="header">
-    <a href="home.php" class="logo"><h3>TOURMANDU</h3> </a>
-    <nav class="navbar">
-        <a href="home.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="package.php">Package</a>
-        
-    </nav>
-    <div class="icons">
-        <?php if (!isset($_SESSION['id'])): ?>
-            <a href="login.php"><i class="fas fa-user-circle"></i> Login</a>
-        <?php else: ?>
-            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        <?php endif; ?>
-    </div>
-    <div id="menu-btn" class="fas fa-bars"></div>
-</section>
+<?php include 'header.php'; ?>
 
-<div class="heading" style="background:url(https://hips.hearstapps.com/hmg-prod/images/autumn-leaves-fallen-in-forest-royalty-free-image-1628717422.jpg?crop=1xw:0.84375xh;center,top)">
+<div class="heading">
    <h1>book now</h1>
 </div>
+
 <section class="booking">
     <h1 class="heading-title">book your trip!</h1>
-    <form action="book_form.php?package_id=<?php echo $package_id; ?>" method="post" class="book-form">
-    <div class="flex">
+    <form action="book_form.php?package_id=<?php echo htmlspecialchars($package_id); ?>" method="post" class="book-form">
+        <div class="flex">
             <div class="inputBox">
-                <span>name:</span>
-                <input type="text" placeholder="enter your name" name="name" required>
-            </div>
-            <div class="inputBox" id="email">
-                <span>email:</span>
-                <input type="email" placeholder="enter your email" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$" required>
+                <span>Name:</span>
+                <input type="text" placeholder="Enter your name" name="name" required>
             </div>
             <div class="inputBox">
-                <span>phone:</span>
-                <input type="tel" placeholder="enter your number" name="phone" pattern="[9][7-8][0-9]{8}" required>
+                <span>Email:</span>
+                <input type="email" placeholder="Enter your email" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$" required>
             </div>
             <div class="inputBox">
-                <span>address:</span>
-                <input type="text" placeholder="enter your address" name="address" required>
-            </div>
-        
-            <div class="inputBox">
-                <span>how many:</span>
-                <input type="number" placeholder="number of guests" name="guests" min="1" required>
+                <span>Phone:</span>
+                <input type="tel" placeholder="Enter your number" name="phone" pattern="[9][7-8][0-9]{8}" required>
             </div>
             <div class="inputBox">
-                <span>arrivals:</span>
+                <span>Address:</span>
+                <input type="text" placeholder="Enter your address" name="address" required>
+            </div>
+            <div class="inputBox">
+                <span>How many guests:</span>
+                <input type="number" placeholder="Number of guests" name="guests" min="1" required>
+            </div>
+            <div class="inputBox">
+                <span>Arrivals:</span>
                 <input type="date" id="date-input" name="arrivals" required>
             </div>
             <div class="inputBox">
-                <span>leaving:</span>
+                <span>Leaving:</span>
                 <input type="date" id="leaving-date" name="leaving" required>
             </div>
         </div>
-        <input type="submit" value="submit" class="btn" name="send">
+        <input type="submit" value="Submit" class="btn" name="send">
     </form>
+
 </section>
 
-<section class="footer">
-    <div class="box-container">
-        <div class="box">
-            <h3>quick links</h3>
-            <a href="home.php"><i class="fas fa-angle-right"></i> Home</a>
-            <a href="about.php"><i class="fas fa-angle-right"></i> About</a>
-            <a href="package.php"><i class="fas fa-angle-right"></i> Package</a>
-            <a href="book.php"><i class="fas fa-angle-right"></i> Book</a>
-        </div>
-        <div class="box">
-            <h3>extra links</h3>
-            <a href="#"><i class="fas fa-angle-right"></i> ask questions</a>
-            <a href="#"><i class="fas fa-angle-right"></i> about us</a>
-            <a href="#"><i class="fas fa-angle-right"></i> privacy policy</a>
-            <a href="#"><i class="fas fa-angle-right"></i> terms of use</a>
-        </div>
-        <div class="box">
-            <h3>contact info</h3>
-            <a href="#"><i class="fas fa-phone"></i> +977 9849426293</a>
-            <a href="#"><i class="fas fa-envelope"></i> stharajesh662@gmail.com</a>
-            <a href="#"><i class="fas fa-map"></i> Bagmati Province, Kathmandu, Nepal</a>
-        </div>
-        <div class="box">
-            <h3>follow us</h3>
-            <a href="#"><i class="fab fa-facebook-f"></i> facebook</a>
-            <a href="#"><i class="fab fa-twitter"></i> twitter</a>
-            <a href="#"><i class="fab fa-instagram"></i> instagram</a>
-            <a href="#"><i class="fab fa-linkedin"></i> linkedin</a>
-        </div>
-    </div>
-    <div class="credit">created by <span>mr. amir shrestha</span> | all rights reserved!</div>
-</section>
+<?php include 'footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
@@ -171,10 +198,6 @@ $package_id = $_GET['id'];
     document.addEventListener('DOMContentLoaded', function() {
         var today = new Date().toISOString().split('T')[0];
         document.getElementById('date-input').setAttribute('min', today);
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var today = new Date().toISOString().split('T')[0];
         document.getElementById('leaving-date').setAttribute('min', today);
     });
 </script>

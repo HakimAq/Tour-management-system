@@ -1,54 +1,34 @@
 <?php
 session_start();
+include 'connection.php'; // DB connection
 
-// Database connection
-$connection = new mysqli('localhost', 'root', '', 'tourmandu_db');
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
+    $package_id = isset($_GET['package_id']) ? intval($_GET['package_id']) : 0;
 
-// Check connection
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
-}
+    // If user is not logged in, use 0
+    $customer_id = $_SESSION['customer_id'] ?? 0;
 
-// Check if the user is logged in
-if (!isset($_SESSION['id'])) {
-    Header("Location: login.php");
-}
-
-// Retrieve the customer ID from the session
-$customer_id = $_SESSION['id'];
-
-// Check if a package is selected
-if (!isset($_GET['package_id'])) {
-    die("Error: No package selected.");
-}
-
-// Retrieve the package ID
-$package_id = $_GET['package_id'];
-
-if (isset($_POST['send'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    $location = $_POST['location'];
-    $guests = $_POST['guests'];
+    $name     = $_POST['name'];
+    $email    = $_POST['email'];
+    $phone    = $_POST['phone'];
+    $address  = $_POST['address'];
+    $guests   = $_POST['guests'];
     $arrivals = $_POST['arrivals'];
-    $leaving = $_POST['leaving'];
+    $leaving  = $_POST['leaving'];
 
-    // Insert into book_form table using prepared statements
-    $insert_query = $connection->prepare("INSERT INTO book_form (name, email, phone, address, location, guests, arrivals, leaving, id, customer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $insert_query->bind_param("sssssisiii", $name, $email, $phone, $address, $location, $guests, $arrivals, $leaving, $package_id, $customer_id);
+    $query = $conn->prepare("INSERT INTO book_form 
+        (name, email, phone, address, guests, arrivals, leaving, package_id, customer_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    if ($insert_query->execute()) {
-        header('Location: book.php');
+    $query->bind_param("ssssissii", 
+        $name, $email, $phone, $address, $guests, $arrivals, $leaving, $package_id, $customer_id);
+
+    if ($query->execute()) {
+        $booking_id = $query->insert_id;
+        header("Location: payment.php?booking_id=" . $booking_id);
+        exit;
     } else {
-        echo "Error: " . $insert_query->error;
+        echo "Error: " . $query->error;
     }
-
-    // Close connections
-    $insert_query->close();
-    $connection->close();
-} else {
-    echo 'Something went wrong, try again!';
 }
 ?>

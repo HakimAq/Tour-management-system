@@ -9,7 +9,7 @@ session_start();
     <title>home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style2.css">
+   
     <style>
         
 
@@ -76,23 +76,9 @@ session_start();
 </head>
 <body>
     
-<section class="header">
-    <a href="home.php" class="logo"><h3>TOURMANDU</h3> </a>
-    <nav class="navbar">
-        <a href="home.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="package.php">Package</a>
-        
-    </nav>
-    <div class="icons">
-        <?php if (!isset($_SESSION['id'])): ?>
-            <a href="login.php"><i class="fas fa-user-circle"></i> Login</a>
-        <?php else: ?>
-            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        <?php endif; ?>
-    </div>
-    <div id="menu-btn" class="fas fa-bars"></div>
-</section>
+<?php
+include 'header.php';
+?>
 
 
 <section class="home">
@@ -233,41 +219,9 @@ session_start();
 
 
 
-<section class="footer">
-    <div class="box-container">
-    <div class="box">
-        <h3>quick links</h3>
-        <a href="home.php"><i class="fas fa-angle-right"></i> Home</a>
-        <a href="about.php"><i class="fas fa-angle-right"></i> About</a>
-        <a href="package.php"><i class="fas fa-angle-right"></i> Package</a>
-        <a href="book.php"><i class="fas fa-angle-right"></i> Book</a>
-    </div>
-    <div class="box">
-        <h3>extra links</h3>
-        <a href="#"><i class="fas fa-angle-right"></i> ask questtions</a>
-        <a href="#"><i class="fas fa-angle-right"></i> about us</a>
-        <a href="#"><i class="fas fa-angle-right"></i> privacy policy</a>
-        <a href="#"><i class="fas fa-angle-right"></i> terms of use</a>
-    </div>
-    <div class="box">
-        <h3>contact info</h3>
-        <a href="#"><i class="fas fa-phone"></i> +977 9849426293</a>
-        <a href="#"><i class="fas fa-envelope"></i> stharajesh662@gmail.com</a>
-        <a href="#"><i class="fas fa-map"></i> Bagmati Province, Kathmandu, Nepal</a>
-    </div>
-
-    <div class="box">
-        <h3>follow us</h3>
-        <a href="#"><i class="fab fa-facebook-f"></i> facebook</a>
-        <a href="#"><i class="fab fa-twitter"></i> twitter</a>
-        <a href="#"><i class="fab fa-instagram"></i> instagram</a>
-        <a href="#"><i class="fab fa-linkedin"></i> linkedin</a>
-    </div>
-
-    </div>
-
-    <div class="credit">created by <span>mr. amir shrestha</span> | all right reserved!</div>
-</section>
+<?php
+include 'footer.php';
+?>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="script.js"></script>

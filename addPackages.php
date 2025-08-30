@@ -1,56 +1,52 @@
 <?php
 include 'connection.php';
 session_start();
+
 if (!isset($_SESSION['id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
     header('Location: login.php');
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Create the uploads directory if it doesn't exist
-  $upload_dir = 'uploads/';
-  if (!is_dir($upload_dir)) {
-    mkdir($upload_dir, 0777, true);
-  }
+    $location = $_POST["location"];
+    $duration = $_POST["duration"];
+    $price = $_POST["price"];
 
-  // Handle the uploaded file
-  $target_file = $upload_dir . basename($_FILES["image"]["name"]);
-  if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-    // File successfully uploaded
-    $image = $target_file;
-  } else {
-    echo "Error uploading file.";
-    exit;
-  }
-
-  // Get the other form values
-  $location = $_POST["location"];
-  $duration = $_POST["duration"];
-  $price = $_POST["price"];
-
-  // Prepare the SQL query
-  $query = "INSERT INTO package(image, location, duration, price) VALUES (?, ?, ?, ?)";
-
-  // Prepare the statement
-  if ($stmt = $conn->prepare($query)) {
-    // Bind parameters
-    $stmt->bind_param("ssss", $image, $location, $duration, $price);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-      include('package_list.php');
-      exit;
-    } else {
-      // Display an error message if the query fails
-      echo "Error executing statement: " . $stmt->error;
+    // Create uploads folder if not exists
+    $upload_dir = "uploads/";
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
     }
 
-    // Close the statement
-    $stmt->close();
-  } else {
-    echo "Error preparing statement: " . $conn->error;
-  }
+    // File upload
+    if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
+        $file_name = basename($_FILES["image"]["name"]);
+        $target_file = $upload_dir . $file_name;
+        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        $allowed_types = ['jpg','jpeg','png','gif'];
+        if (!in_array($file_type, $allowed_types)) {
+            die("Only JPG, JPEG, PNG & GIF files allowed.");
+        }
+
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            $query = "INSERT INTO package (image, location, duration, price) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ssss", $file_name, $location, $duration, $price);
+            if ($stmt->execute()) {
+                // echo "Package added successfully.";
+            } else {
+                echo "Database error: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Error uploading image.";
+        }
+    } else {
+        echo "No image selected or upload error.";
+    }
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -113,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="addPackages.php">Add Package</a>
         <a href="package_list.php">Package Information</a>
         <a href="user_list.php">User Information</a>
-        <a href="booked.php">package booked</a>
+        <a href="booked.php">Package Booked</a>
     </nav>
     <div class="icons">
         <a href="login.php"><i class="fas fa-sign-out"></i>Logout</a>
@@ -126,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Add Packages</h1>
         <form class="form-box" method="post" enctype="multipart/form-data">
             <label for="image">Image*:</label>
-            <input type="file" id="image" name="image" required><br><br>
+            <input type="file" id="image" name="image" accept="image/*" required><br><br>
             <div class="image-preview" id="imagePreview">
                 <img src="" alt="Image Preview" class="image-preview__image" style="display: none; width: 100%; height: auto;"/>
                 <span class="image-preview__default-text">Image Preview</span>
@@ -136,18 +132,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="location" name="location" required><br><br>
 
             <label for="duration">Time Duration*:</label>
-            <input type="text" name="duration"  required><br><br>
-
+            <input type="text" name="duration" required><br><br>
 
             <label for="price">Price*:</label>
             <input type="number" id="price" name="price" required><br><br>
 
-            <button type="submit" src='package_list.php'  class="btn">Add</button><br><br>
+            <button type="submit" class="btn" href="package_list.php">Add</button><br><br>
         </form>
     </div>
 </div>
 
-<section class="footer">
+<!-- <section class="footer">
     <div class="box-container">
         <div class="box">
             <h3>Quick Links</h3>
@@ -178,8 +173,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <div class="credit">Created by <span>Mr. Amir Shrestha</span> | All rights reserved!</div>
-</section>
-
+</section> -->
+<?php include 'footer.php' ?>
 <script>
 document.getElementById("image").addEventListener("change", function() {
     const file = this.files[0];
@@ -198,6 +193,5 @@ document.getElementById("image").addEventListener("change", function() {
     }
 });
 </script>
-
 </body>
 </html>

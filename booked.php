@@ -98,7 +98,7 @@ if($query->num_rows >0){
     echo "<table border= '1'>";
     echo "<tr>";
    
-    echo "<th>ID </th>";
+    echo "<th>Package ID </th>";
     echo "<th>Name</th>";
     echo "<th>Email</th>";  
     echo "<th>Phone Number</th>";
@@ -123,7 +123,7 @@ if($query->num_rows >0){
         echo "<td>".$row['guests']."</td>";
         echo "<td>".$row['arrivals']."</td>";
         echo "<td>".$row['leaving']."</td>";
-        echo "<td>".$row['id']."</td>";
+        echo "<td>".$row['package_id']."</td>";
         echo "<td>".$row['customer_id']."</td>";
         
         echo "</tr>";
